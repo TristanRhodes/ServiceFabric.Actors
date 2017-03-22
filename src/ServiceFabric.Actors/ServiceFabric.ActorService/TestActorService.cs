@@ -21,7 +21,7 @@ namespace ServiceFabric.ActorService
     [StatePersistence(StatePersistence.Persisted)]
     internal class TestActorService : Actor, ITestActorService
     {
-        private IActorTimer _updateTimer;
+        //private IActorTimer _updateTimer;
 
         /// <summary>
         /// Initializes a new instance of ActorService
@@ -48,7 +48,7 @@ namespace ServiceFabric.ActorService
             // For more information, see https://aka.ms/servicefabricactorsstateserialization
 
             await StateManager.TryAddStateAsync("count", 0);
-            _updateTimer = RegisterTimer(this.Tick, null, TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(10));
+            //_updateTimer = RegisterTimer(this.Tick, null, TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(10));
 
             return;
         }

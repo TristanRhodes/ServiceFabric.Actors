@@ -59,7 +59,7 @@ namespace ServiceFabric.GatewayService
                 try
                 {
                     var count = await testProxy.GetCountAsync(cancellationToken);
-                    await testProxy.SetCountAsync(count++, cancellationToken);
+                    await testProxy.SetCountAsync(++count, cancellationToken);
                     Console.WriteLine("Count: " + count);
                 }
                 catch (Exception ex)
@@ -72,9 +72,8 @@ namespace ServiceFabric.GatewayService
                     // Do something?
                 }
 
-                await Task.Delay(TimeSpan.FromMilliseconds(10), cancellationToken);
+                await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
             }
-
 
             //await base.RunAsync(cancellationToken);
         }
