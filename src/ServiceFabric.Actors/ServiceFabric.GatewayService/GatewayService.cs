@@ -52,28 +52,35 @@ namespace ServiceFabric.GatewayService
 
             var testProxy = ActorProxy.Create<ITestActorService>(actorId, actorServiceUri);
 
-            while (true)
+            Task t = Task.Run(async () =>
             {
-                cancellationToken.ThrowIfCancellationRequested();
+               while (true)
+               {
+                   cancellationToken.ThrowIfCancellationRequested();
 
-                try
-                {
-                    var count = await testProxy.GetCountAsync(cancellationToken);
-                    await testProxy.SetCountAsync(++count, cancellationToken);
-                    Console.WriteLine("Count: " + count);
-                }
-                catch (Exception ex)
-                {
-                    // Ignore Exceptions
-                    Console.WriteLine("Exception: " + ex);
-                }
-                finally
-                {
-                    // Do something?
-                }
+                   try
+                   {
+                       var count = await testProxy.GetCountAsync(cancellationToken);
+                       await testProxy.SetCountAsync(++count, cancellationToken);
+                       ServiceEventSource.Current.Message("Count: " + count);
+                   }
+                   catch (Exception ex)
+                   {
+                        // Must be a better way to log exceptions... Insights?
+                       ServiceEventSource.Current.Message("EXCEPTION: " + ex);
+                   }
+                   finally
+                   {
+                        // Cleanup
+                    }
 
-                await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
-            }
+                   await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
+               }
+           });
+
+            // NOTE: Can wait for multiple actor workers here.
+
+            await t;
 
             //await base.RunAsync(cancellationToken);
         }
