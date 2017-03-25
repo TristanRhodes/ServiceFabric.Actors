@@ -18,6 +18,7 @@ namespace ServiceFabric.ActorService
     ///  - Volatile: State is kept in memory only and replicated.
     ///  - None: State is kept in memory only and not replicated.
     /// </remarks>
+    [ActorService(Name = "TestActorService")]
     [StatePersistence(StatePersistence.Persisted)]
     internal class TestActorService : Actor, ITestActorService
     {

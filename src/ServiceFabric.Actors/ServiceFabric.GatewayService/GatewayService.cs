@@ -37,52 +37,57 @@ namespace ServiceFabric.GatewayService
 
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
+            //var appName = Context.CodePackageActivationContext.ApplicationName;
+            //var serviceName = "TestActorService";
+
+            //var actorProxies = CreateActors<ITestActorService>(appName, serviceName, 10);
+            //var tasks = RunActors(actorProxies, cancellationToken);
+
             var appName = Context.CodePackageActivationContext.ApplicationName;
-            var serviceName = "TestActorServiceActorService";
-            var actorId = new ActorId(
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        "{0}-Actor",
-                        appName));
+            var serviceName = "MapReduceSupervisorActorService";
+            var file = "D:\\Temp\\stocks.json";
+            var actorProxy = ActorFactory.CreateActor<IMapReduceSupervisorActor>(appName, serviceName, "supervisor", 1);
+            await actorProxy.Process(file);
 
-            var actorServiceUri = new Uri(appName + "/" + serviceName);
+            //await Task.WhenAll(tasks);
+        }
 
-            // fabric:/VisualObjects/VisualObjects.ActorService
-            // fabric:/ServiceFabric.Actors/TestActorServiceActorService
 
-            var testProxy = ActorProxy.Create<ITestActorService>(actorId, actorServiceUri);
-
-            Task t = Task.Run(async () =>
+        private static IEnumerable<Task> RunActors(IEnumerable<ITestActorService> actorProxies, CancellationToken cancellationToken)
+        {
+            foreach(var actor in actorProxies)
             {
-               while (true)
-               {
-                   cancellationToken.ThrowIfCancellationRequested();
+                yield return RunActor(actor, cancellationToken);
+            }
+        }
 
-                   try
-                   {
-                       var count = await testProxy.GetCountAsync(cancellationToken);
-                       await testProxy.SetCountAsync(++count, cancellationToken);
-                       ServiceEventSource.Current.Message("Count: " + count);
-                   }
-                   catch (Exception ex)
-                   {
-                        // Must be a better way to log exceptions... Insights?
-                       ServiceEventSource.Current.Message("EXCEPTION: " + ex);
-                   }
-                   finally
-                   {
-                        // Cleanup
-                    }
+        private static async Task RunActor(ITestActorService actorProxy, CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-                   await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
-               }
-           });
+                try
+                {
+                    var count = await actorProxy.GetCountAsync(cancellationToken);
+                    await actorProxy.SetCountAsync(++count, cancellationToken);
+                    ServiceEventSource.Current.Message("Count: " + count);
 
-            // NOTE: Can wait for multiple actor workers here.
+                    if (count > 100)
+                        break;
+                }
+                catch (Exception ex)
+                {
+                    // Must be a better way to log exceptions... Insights?
+                    ServiceEventSource.Current.Message("EXCEPTION: " + ex);
+                }
+                finally
+                {
+                    // Cleanup
+                }
 
-            await t;
-
-            //await base.RunAsync(cancellationToken);
+                await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
+            }
         }
     }
 }

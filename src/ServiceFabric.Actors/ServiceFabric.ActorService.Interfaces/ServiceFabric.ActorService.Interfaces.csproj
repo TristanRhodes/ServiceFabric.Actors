@@ -69,6 +69,10 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActorFactory.cs" />
+    <Compile Include="IMapActor.cs" />
+    <Compile Include="IMapReduceSupervisorActor.cs" />
+    <Compile Include="IReduceActor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ITestActorService.cs" />
   </ItemGroup>

@@ -20,9 +20,17 @@ namespace ServiceFabric.ActorService
                 // The contents of your ServiceManifest.xml and ApplicationManifest.xml files
                 // are automatically populated when you build this project.
                 // For more information, see https://aka.ms/servicefabricactorsplatform
-
                 ActorRuntime.RegisterActorAsync<TestActorService>(
-                   (context, actorType) => new Microsoft.ServiceFabric.Actors.Runtime.ActorService(context, actorType)).GetAwaiter().GetResult();
+                    (context, actorType) => new Microsoft.ServiceFabric.Actors.Runtime.ActorService(context, actorType)).GetAwaiter().GetResult();
+
+                ActorRuntime.RegisterActorAsync<MapReduceSupervisorActor>(
+                    (context, actorType) => new Microsoft.ServiceFabric.Actors.Runtime.ActorService(context, actorType)).GetAwaiter().GetResult();
+
+                ActorRuntime.RegisterActorAsync<MapActor>(
+                    (context, actorType) => new Microsoft.ServiceFabric.Actors.Runtime.ActorService(context, actorType)).GetAwaiter().GetResult();
+
+                ActorRuntime.RegisterActorAsync<ReduceActor>(
+                    (context, actorType) => new Microsoft.ServiceFabric.Actors.Runtime.ActorService(context, actorType)).GetAwaiter().GetResult();
 
                 Thread.Sleep(Timeout.Infinite);
             }

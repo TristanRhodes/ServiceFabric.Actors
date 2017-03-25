@@ -1,16 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="ServiceFabric.ActorServicePkg" Version="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <ServiceTypes>
-    <StatefulServiceType ServiceTypeName="TestActorServiceActorServiceType" HasPersistedState="true">
+    <StatefulServiceType ServiceTypeName="TestActorServiceType" HasPersistedState="true">
       <Extensions>
-        <Extension Name="__GeneratedServiceType__" GeneratedId="702a32b3-1a9f-4686-b7ab-34da1d7a31bf|Persisted">
+        <Extension Name="__GeneratedServiceType__" GeneratedId="79c186ae-f329-43c9-b052-790798dded8a|Persisted">
           <GeneratedNames xmlns="http://schemas.microsoft.com/2015/03/fabact-no-schema">
-            <DefaultService Name="TestActorServiceActorService" />
-            <ServiceEndpoint Name="TestActorServiceActorServiceEndpoint" />
-            <ReplicatorEndpoint Name="TestActorServiceActorServiceReplicatorEndpoint" />
-            <ReplicatorConfigSection Name="TestActorServiceActorServiceReplicatorConfig" />
-            <ReplicatorSecurityConfigSection Name="TestActorServiceActorServiceReplicatorSecurityConfig" />
-            <StoreConfigSection Name="TestActorServiceActorServiceLocalStoreConfig" />
+            <DefaultService Name="TestActorService" />
+            <ServiceEndpoint Name="TestActorServiceEndpoint" />
+            <ReplicatorEndpoint Name="TestActorServiceReplicatorEndpoint" />
+            <ReplicatorConfigSection Name="TestActorServiceReplicatorConfig" />
+            <ReplicatorSecurityConfigSection Name="TestActorServiceReplicatorSecurityConfig" />
+            <StoreConfigSection Name="TestActorServiceLocalStoreConfig" />
+          </GeneratedNames>
+        </Extension>
+      </Extensions>
+    </StatefulServiceType>
+    <StatefulServiceType ServiceTypeName="MapReduceSupervisorActorServiceType">
+      <Extensions>
+        <Extension Name="__GeneratedServiceType__" GeneratedId="b0dd1f68-892e-4d0d-94d3-eeaec7179443|None">
+          <GeneratedNames xmlns="http://schemas.microsoft.com/2015/03/fabact-no-schema">
+            <DefaultService Name="MapReduceSupervisorActorService" />
+            <ServiceEndpoint Name="MapReduceSupervisorActorServiceEndpoint" />
+            <ReplicatorEndpoint Name="MapReduceSupervisorActorServiceReplicatorEndpoint" />
+            <ReplicatorConfigSection Name="MapReduceSupervisorActorServiceReplicatorConfig" />
+            <ReplicatorSecurityConfigSection Name="MapReduceSupervisorActorServiceReplicatorSecurityConfig" />
+            <StoreConfigSection Name="MapReduceSupervisorActorServiceLocalStoreConfig" />
+          </GeneratedNames>
+        </Extension>
+      </Extensions>
+    </StatefulServiceType>
+    <StatefulServiceType ServiceTypeName="MapActorServiceType">
+      <Extensions>
+        <Extension Name="__GeneratedServiceType__" GeneratedId="004f85a3-d0bc-45f2-94d9-e2800687c536|None">
+          <GeneratedNames xmlns="http://schemas.microsoft.com/2015/03/fabact-no-schema">
+            <DefaultService Name="MapActorService" />
+            <ServiceEndpoint Name="MapActorServiceEndpoint" />
+            <ReplicatorEndpoint Name="MapActorServiceReplicatorEndpoint" />
+            <ReplicatorConfigSection Name="MapActorServiceReplicatorConfig" />
+            <ReplicatorSecurityConfigSection Name="MapActorServiceReplicatorSecurityConfig" />
+            <StoreConfigSection Name="MapActorServiceLocalStoreConfig" />
+          </GeneratedNames>
+        </Extension>
+      </Extensions>
+    </StatefulServiceType>
+    <StatefulServiceType ServiceTypeName="ReduceActorServiceType" HasPersistedState="true">
+      <Extensions>
+        <Extension Name="__GeneratedServiceType__" GeneratedId="78e85144-97d6-45bd-b2d8-f80817070cab|Persisted">
+          <GeneratedNames xmlns="http://schemas.microsoft.com/2015/03/fabact-no-schema">
+            <DefaultService Name="ReduceActorService" />
+            <ServiceEndpoint Name="ReduceActorServiceEndpoint" />
+            <ReplicatorEndpoint Name="ReduceActorServiceReplicatorEndpoint" />
+            <ReplicatorConfigSection Name="ReduceActorServiceReplicatorConfig" />
+            <ReplicatorSecurityConfigSection Name="ReduceActorServiceReplicatorSecurityConfig" />
+            <StoreConfigSection Name="ReduceActorServiceLocalStoreConfig" />
           </GeneratedNames>
         </Extension>
       </Extensions>
@@ -26,8 +68,14 @@
   <ConfigPackage Name="Config" Version="1.0.0" />
   <Resources>
     <Endpoints>
-      <Endpoint Name="TestActorServiceActorServiceEndpoint" />
-      <Endpoint Name="TestActorServiceActorServiceReplicatorEndpoint" />
+      <Endpoint Name="TestActorServiceEndpoint" />
+      <Endpoint Name="TestActorServiceReplicatorEndpoint" />
+      <Endpoint Name="MapReduceSupervisorActorServiceEndpoint" />
+      <Endpoint Name="MapReduceSupervisorActorServiceReplicatorEndpoint" />
+      <Endpoint Name="MapActorServiceEndpoint" />
+      <Endpoint Name="MapActorServiceReplicatorEndpoint" />
+      <Endpoint Name="ReduceActorServiceEndpoint" />
+      <Endpoint Name="ReduceActorServiceReplicatorEndpoint" />
     </Endpoints>
   </Resources>
   <!-- The content will be generated during build -->

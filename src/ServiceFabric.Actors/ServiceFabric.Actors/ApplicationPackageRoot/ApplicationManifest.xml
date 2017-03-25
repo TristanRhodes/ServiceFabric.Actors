@@ -2,9 +2,18 @@
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="ServiceFabric.ActorsType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
     <Parameter Name="GatewayService_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="TestActorServiceActorService_PartitionCount" DefaultValue="10" />
-    <Parameter Name="TestActorServiceActorService_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="TestActorServiceActorService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="TestActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="TestActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="TestActorService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="MapReduceSupervisorActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="MapReduceSupervisorActorService_MinReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="MapReduceSupervisorActorService_TargetReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="MapActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="MapActorService_MinReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="MapActorService_TargetReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="ReduceActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="ReduceActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ReduceActorService_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -22,9 +31,24 @@
         <SingletonPartition />
       </StatelessService>
     </Service>
-    <Service Name="TestActorServiceActorService" GeneratedIdRef="702a32b3-1a9f-4686-b7ab-34da1d7a31bf|Persisted">
-      <StatefulService ServiceTypeName="TestActorServiceActorServiceType" TargetReplicaSetSize="[TestActorServiceActorService_TargetReplicaSetSize]" MinReplicaSetSize="[TestActorServiceActorService_MinReplicaSetSize]">
-        <UniformInt64Partition PartitionCount="[TestActorServiceActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+    <Service Name="TestActorService" GeneratedIdRef="79c186ae-f329-43c9-b052-790798dded8a|Persisted">
+      <StatefulService ServiceTypeName="TestActorServiceType" TargetReplicaSetSize="[TestActorService_TargetReplicaSetSize]" MinReplicaSetSize="[TestActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[TestActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="MapReduceSupervisorActorService" GeneratedIdRef="b0dd1f68-892e-4d0d-94d3-eeaec7179443|None">
+      <StatefulService ServiceTypeName="MapReduceSupervisorActorServiceType" TargetReplicaSetSize="[MapReduceSupervisorActorService_TargetReplicaSetSize]" MinReplicaSetSize="[MapReduceSupervisorActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[MapReduceSupervisorActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="MapActorService" GeneratedIdRef="004f85a3-d0bc-45f2-94d9-e2800687c536|None">
+      <StatefulService ServiceTypeName="MapActorServiceType" TargetReplicaSetSize="[MapActorService_TargetReplicaSetSize]" MinReplicaSetSize="[MapActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[MapActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="ReduceActorService" GeneratedIdRef="78e85144-97d6-45bd-b2d8-f80817070cab|Persisted">
+      <StatefulService ServiceTypeName="ReduceActorServiceType" TargetReplicaSetSize="[ReduceActorService_TargetReplicaSetSize]" MinReplicaSetSize="[ReduceActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ReduceActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
       </StatefulService>
     </Service>
     <!-- The section below creates instances of service types, when an instance of this 
