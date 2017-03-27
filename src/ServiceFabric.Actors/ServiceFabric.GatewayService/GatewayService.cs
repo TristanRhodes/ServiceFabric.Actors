@@ -36,14 +36,17 @@ namespace ServiceFabric.GatewayService
             };
         }
 
-        protected override async Task RunAsync(CancellationToken cancellationToken)
+        protected override Task RunAsync(CancellationToken cancellationToken)
         {
-            //var appName = Context.CodePackageActivationContext.ApplicationName;
-            //var serviceName = "TestActorService";
+            var task = AsyncSolution(cancellationToken);
 
-            //var actorProxies = CreateActors<ITestActorService>(appName, serviceName, 10);
-            //var tasks = RunActors(actorProxies, cancellationToken);
+            // TODO: Perform Synchronously.
 
+            return task;
+        }
+
+        private async Task AsyncSolution(CancellationToken cancellationToken)
+        {
             var appName = Context.CodePackageActivationContext.ApplicationName;
             var serviceName = "MapReduceSupervisorActorService";
             var file = "D:\\Temp\\stocks.json";
@@ -54,7 +57,7 @@ namespace ServiceFabric.GatewayService
             var reducedData = await actorProxy.Process(file);
             stopWatch.Stop();
 
-            ServiceEventSource.Current.Message("Total File Processing Time: " + stopWatch.Elapsed);
+            ServiceEventSource.Current.Message("ACTOR SOLUTION: Total Processing Time: {0}, Total Records: {1}, Per Record Processing Time: {2:0.00}ms", stopWatch.Elapsed, reducedData.ProcessedRecordsCounter, (double)stopWatch.Elapsed.TotalMilliseconds / (double)reducedData.ProcessedRecordsCounter);
         }
     }
 }

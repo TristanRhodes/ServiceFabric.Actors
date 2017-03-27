@@ -9,5 +9,7 @@ namespace ServiceFabric.ActorService.Interfaces.Model
     public class ReducedData
     {
         public Dictionary<string, int> CompaniesCount { get; set; }
+
+        public int ProcessedRecordsCounter { get; set; }
     }
 }

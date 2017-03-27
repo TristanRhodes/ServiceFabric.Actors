@@ -17,6 +17,8 @@ namespace ServiceFabric.ActorService
     [StatePersistence(StatePersistence.Persisted)]
     public class ReduceActor : Actor, IReduceActor
     {
+        private int _counter = 0;
+
         // * Recieve mapped record (JSON text)
         // * Aggregate values
 
@@ -29,6 +31,7 @@ namespace ServiceFabric.ActorService
         {
             var value = await StateManager.GetOrAddStateAsync(map.CompanyName, 0);
             await StateManager.SetStateAsync(map.CompanyName, ++value);
+            _counter++;
         }
 
         public async Task<ReducedData> GetResultAsync()
@@ -45,7 +48,8 @@ namespace ServiceFabric.ActorService
 
             return new ReducedData()
             {
-                CompaniesCount = dictionary
+                CompaniesCount = dictionary,
+                ProcessedRecordsCounter = _counter
             };
         }
     }
