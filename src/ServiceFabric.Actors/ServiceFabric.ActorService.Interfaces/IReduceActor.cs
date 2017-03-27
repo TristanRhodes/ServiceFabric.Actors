@@ -1,4 +1,5 @@
 ﻿using Microsoft.ServiceFabric.Actors;
+using ServiceFabric.ActorService.Interfaces.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace ServiceFabric.ActorService.Interfaces
 {
     public interface IReduceActor : IActor
     {
-        Task ReduceAsync(Dictionary<string, string> map);
+        Task ReduceAsync(MappedData map);
 
-        Task<dynamic> GetResult();
+        Task<ReducedData> GetResultAsync();
     }
 }

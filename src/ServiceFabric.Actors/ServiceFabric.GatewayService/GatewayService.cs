@@ -47,9 +47,7 @@ namespace ServiceFabric.GatewayService
             var serviceName = "MapReduceSupervisorActorService";
             var file = "D:\\Temp\\stocks.json";
             var actorProxy = ActorFactory.CreateActor<IMapReduceSupervisorActor>(appName, serviceName, "supervisor", 1);
-            await actorProxy.Process(file);
-
-            //await Task.WhenAll(tasks);
+            var reducedData = await actorProxy.Process(file);
         }
 
 

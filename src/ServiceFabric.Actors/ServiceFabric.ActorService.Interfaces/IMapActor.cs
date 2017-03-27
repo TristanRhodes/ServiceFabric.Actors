@@ -1,4 +1,5 @@
 ﻿using Microsoft.ServiceFabric.Actors;
+using ServiceFabric.ActorService.Interfaces.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace ServiceFabric.ActorService.Interfaces
 {
     public interface IMapActor : IActor
     {
-        Task<Dictionary<string, string>> MapAsync(string text);
+        Task<MappedData> MapAsync(string text);
     }
 }

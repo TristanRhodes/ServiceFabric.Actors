@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CSharp;
 
 namespace ServiceFabric.ActorService
 {
     using Microsoft.ServiceFabric.Actors.Runtime;
+    using Newtonsoft.Json.Linq;
     using ServiceFabric.ActorService.Interfaces;
+    using ServiceFabric.ActorService.Interfaces.Model;
 
     [ActorService(Name = "MapActorService")]
     [StatePersistence(StatePersistence.None)]
@@ -24,16 +27,16 @@ namespace ServiceFabric.ActorService
         {
         }
 
-        public Task<Dictionary<string, string>> MapAsync(string text)
+        public Task<MappedData> MapAsync(string text)
         {
-            var result = text
-                .Split(' ', ',', ':', '.', ';')
-                .GroupBy(k => k)
-                .ToDictionary(k => k.Key, v => v.Key);
+            var jobject = JObject.Parse(text);
+            var company = jobject["Company"].Value<string>();
 
-            var entity = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(text);
-
-            return Task.FromResult(result);
+            var mapData = new MappedData()
+            {
+                CompanyName = company
+            };
+            return Task.FromResult(mapData);
         }
     }
 }

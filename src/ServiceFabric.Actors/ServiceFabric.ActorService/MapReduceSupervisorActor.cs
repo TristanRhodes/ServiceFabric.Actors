@@ -10,14 +10,13 @@ namespace ServiceFabric.ActorService
     using Microsoft.ServiceFabric.Actors.Runtime;
     using Microsoft.ServiceFabric.Data.Collections;
     using ServiceFabric.ActorService.Interfaces;
+    using ServiceFabric.ActorService.Interfaces.Model;
     using System.IO;
 
     [ActorService(Name = "MapReduceSupervisorActorService")]
     [StatePersistence(StatePersistence.None)]
     public class MapReduceSupervisorActor : Actor, IMapReduceSupervisorActor
     {
-        private IReliableDictionary<string, int> _persistence;
-
         // * Recieve file path, stream file content.
         // * Push streamed content to Map actor(s)
         // * Take mapped result and push to reducer
@@ -29,26 +28,33 @@ namespace ServiceFabric.ActorService
         }
 
 
-        public async Task Process(string fileName)
+        public async Task<ReducedData> Process(string fileName)
         {
             var appName = ActorService.Context.CodePackageActivationContext.ApplicationName;
             var mapActor = ActorFactory.CreateActor<IMapActor>(appName, "MapActorService", "mapper", 1);
             var reduceActor = ActorFactory.CreateActor<IReduceActor>(appName, "ReduceActorService", "reducer", 1);
 
             using (var stream = File.OpenRead(fileName))
-            using (var reader = new StreamReader(stream))
             {
-                while (!reader.EndOfStream)
+                var lines = ReadLines(stream);
+
+                foreach (var line in lines)
                 {
-                    var line = reader.ReadLine();
                     var map = await mapActor.MapAsync(line);
                     await reduceActor.ReduceAsync(map);
                 }
             }
 
-            var result = reduceActor.GetResult();
+            return await reduceActor.GetResultAsync();
+        }
 
-            throw new NotImplementedException();
+        private IEnumerable<string> ReadLines(Stream fileStream)
+        {
+            using (StreamReader reader = new StreamReader(fileStream))
+            {
+                while (!reader.EndOfStream)
+                    yield return reader.ReadLine();
+            }
         }
     }
 }

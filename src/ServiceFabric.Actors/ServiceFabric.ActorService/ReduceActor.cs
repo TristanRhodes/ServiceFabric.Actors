@@ -11,6 +11,7 @@ namespace ServiceFabric.ActorService
     using Microsoft.ServiceFabric.Actors.Runtime;
     using Microsoft.ServiceFabric.Data.Collections;
     using ServiceFabric.ActorService.Interfaces;
+    using ServiceFabric.ActorService.Interfaces.Model;
 
     [ActorService(Name = "ReduceActorService")]
     [StatePersistence(StatePersistence.Persisted)]
@@ -24,16 +25,13 @@ namespace ServiceFabric.ActorService
         {
         }
 
-        public async Task ReduceAsync(Dictionary<string, string> map)
+        public async Task ReduceAsync(MappedData map)
         {
-            foreach (var kvp in map)
-            {
-                var value = await StateManager.GetOrAddStateAsync(kvp.Key, 0);
-                await StateManager.SetStateAsync(kvp.Key, ++value);
-            }
+            var value = await StateManager.GetOrAddStateAsync(map.CompanyName, 0);
+            await StateManager.SetStateAsync(map.CompanyName, ++value);
         }
 
-        public async Task<dynamic> GetResult()
+        public async Task<ReducedData> GetResultAsync()
         {
             var stateNames = await StateManager.GetStateNamesAsync();
 
@@ -45,7 +43,10 @@ namespace ServiceFabric.ActorService
                 dictionary[name] = value;
             }
 
-            return dictionary;
+            return new ReducedData()
+            {
+                CompaniesCount = dictionary
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.ServiceFabric.Actors;
+using ServiceFabric.ActorService.Interfaces.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace ServiceFabric.ActorService.Interfaces
 {
     public interface IMapReduceSupervisorActor : IActor
     {
-        Task Process(string fileName);
+        Task<ReducedData> Process(string fileName);
     }
 }
