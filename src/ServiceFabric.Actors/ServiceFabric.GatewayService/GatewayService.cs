@@ -10,6 +10,7 @@ using Microsoft.ServiceFabric.Actors.Client;
 using ServiceFabric.ActorService.Interfaces;
 using Microsoft.ServiceFabric.Actors;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace ServiceFabric.GatewayService
 {
@@ -47,7 +48,13 @@ namespace ServiceFabric.GatewayService
             var serviceName = "MapReduceSupervisorActorService";
             var file = "D:\\Temp\\stocks.json";
             var actorProxy = ActorFactory.CreateActor<IMapReduceSupervisorActor>(appName, serviceName, "supervisor", 1);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
             var reducedData = await actorProxy.Process(file);
+            stopWatch.Stop();
+
+            ServiceEventSource.Current.Message("Total File Processing Time: " + stopWatch.Elapsed);
         }
 
 
