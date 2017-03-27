@@ -56,43 +56,5 @@ namespace ServiceFabric.GatewayService
 
             ServiceEventSource.Current.Message("Total File Processing Time: " + stopWatch.Elapsed);
         }
-
-
-        private static IEnumerable<Task> RunActors(IEnumerable<ITestActorService> actorProxies, CancellationToken cancellationToken)
-        {
-            foreach(var actor in actorProxies)
-            {
-                yield return RunActor(actor, cancellationToken);
-            }
-        }
-
-        private static async Task RunActor(ITestActorService actorProxy, CancellationToken cancellationToken)
-        {
-            while (true)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                try
-                {
-                    var count = await actorProxy.GetCountAsync(cancellationToken);
-                    await actorProxy.SetCountAsync(++count, cancellationToken);
-                    ServiceEventSource.Current.Message("Count: " + count);
-
-                    if (count > 100)
-                        break;
-                }
-                catch (Exception ex)
-                {
-                    // Must be a better way to log exceptions... Insights?
-                    ServiceEventSource.Current.Message("EXCEPTION: " + ex);
-                }
-                finally
-                {
-                    // Cleanup
-                }
-
-                await Task.Delay(TimeSpan.FromMilliseconds(1000), cancellationToken);
-            }
-        }
     }
 }
